@@ -11,10 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import edu.quincycollege.computerclub.btinrange.BluetoothManagerCallBacks;
+import edu.quincycollege.computerclub.btinrange.BtInRangeCallBacks;
 import edu.quincycollege.computerclub.btinrange.BtInRange;
 
-public class MainActivity extends AppCompatActivity implements BluetoothManagerCallBacks {
+public class MainActivity extends AppCompatActivity implements BtInRangeCallBacks {
 
     private final String MAC1 = "FF:FF:FF:FF:FF:FF";
     private final String MAC2 = "FF:FF:FF:FF:FF:FF";
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerC
 
     }
 
-    public void deviceConnectionResult(final boolean inRange) {
+    public void btInRangeResult(final boolean inRange) {
         //Update UI via runOnUiThread(), avoid CalledFromWrongThreadException
         try {
             runOnUiThread(new Runnable() {
@@ -85,19 +85,19 @@ public class MainActivity extends AppCompatActivity implements BluetoothManagerC
                 public void run() {
                     if (inRange) {
                         text1.setText("Connected");
-                        Log.v("Msg", "deviceConnectionResult Connected");
+                        Log.v("Msg", "btInRangeResult Connected");
 
                     } else {
                         text1.setText("Disconnected");
 
-                        Log.v("Msg", "deviceConnectionResult Disconnected");
+                        Log.v("Msg", "btInRangeResult Disconnected");
                     }
                 }
             });
 
 
         } catch (Exception ex) {
-            Log.v("Msg", "deviceConnectionResult error", ex);
+            Log.v("Msg", "btInRangeResult error", ex);
 
         }
     }

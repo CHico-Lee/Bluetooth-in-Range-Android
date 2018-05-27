@@ -19,7 +19,7 @@ import static android.content.ContentValues.TAG;
 
 public class BtInRange {
 
-    private BluetoothManagerCallBacks bTCallBacks;
+    private BtInRangeCallBacks bTCallBacks;
     private BroadcastReceiver receiver;
 
     private BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -31,7 +31,7 @@ public class BtInRange {
     private boolean isPause;
     private int intervalMillisec = 60000;
 
-    public BtInRange(BluetoothManagerCallBacks bTCallBacks)
+    public BtInRange(BtInRangeCallBacks bTCallBacks)
     {
         this.bTCallBacks = bTCallBacks;
         receiver = null;
@@ -84,7 +84,7 @@ public class BtInRange {
 
     public void connectionTimeout() {
         if (!deviceConnectedResult) {
-            bTCallBacks.deviceConnectionResult(deviceConnectedResult);
+            bTCallBacks.btInRangeResult(deviceConnectedResult);
             Log.v("Msg", "Timeout, not connected");
 
             // Check again after 30s
@@ -112,7 +112,7 @@ public class BtInRange {
                         // Device in range, bingo
                         //checkNetworkthread.interrupt();
                         deviceConnectedResult = true;
-                        bTCallBacks.deviceConnectionResult(deviceConnectedResult);
+                        bTCallBacks.btInRangeResult(deviceConnectedResult);
                         Log.v("Msg", "BT connected "+ device.getName() + " looking for "+deviceHardwareAddress);
                         delayChecker();
 
@@ -158,7 +158,7 @@ public class BtInRange {
         BluetoothDevice targetDevice = getTargetDevice(targetDeviceMac);
         if (targetDevice == null) {
             deviceConnectedResult = false;
-            bTCallBacks.deviceConnectionResult(deviceConnectedResult);
+            bTCallBacks.btInRangeResult(deviceConnectedResult);
             delayChecker();
             return;
         }
