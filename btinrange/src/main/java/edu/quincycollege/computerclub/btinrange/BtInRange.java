@@ -29,7 +29,8 @@ public class BtInRange {
     private boolean deviceConnectedResult;
 
     private boolean isPause;
-    private int intervalMillisec = 60000;
+    private boolean isRunning;
+    private int intervalMillisec;
 
     public BtInRange(BtInRangeCallBacks bTCallBacks)
     {
@@ -38,6 +39,9 @@ public class BtInRange {
         targetDeviceMac = "";
         checkNetworkthread = null;
         isPause = true;
+        isRunning = false;
+        intervalMillisec = 60000;
+
     }
 
     public void setTargetDeviceByMac(String mac) {
@@ -60,7 +64,9 @@ public class BtInRange {
     public void startChecker() {
         if (isPause) {
             isPause = false;
-            runChecker();
+            if (!isRunning)
+                isRunning = true;
+                runChecker();
         }
     }
 
@@ -69,8 +75,10 @@ public class BtInRange {
     }
 
     private void delayChecker() {
-        if (isPause)
+        if (isPause) {
+            isRunning = false;
             return;
+        }
         // Check again after 30s
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -147,6 +155,10 @@ public class BtInRange {
     }
 
     private void runChecker() {
+        if (bTCallBacks == null) {
+            Log.v(TAG, "bTCallBacks is null.");
+            return;
+        }
 
         if (bluetoothAdapter == null){
             Log.v(TAG, "Bluetooth not available.");
