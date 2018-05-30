@@ -64,9 +64,10 @@ public class BtInRange {
     public void startChecker() {
         if (isPause) {
             isPause = false;
-            if (!isRunning)
+            if (!isRunning) {
                 isRunning = true;
                 runChecker();
+            }
         }
     }
 
@@ -77,8 +78,10 @@ public class BtInRange {
     private void delayChecker() {
         if (isPause) {
             isRunning = false;
+            Log.v("Msg", "stopped on delayChecker");
             return;
         }
+        Log.v("Msg", "isPause" + isPause);
         // Check again after 30s
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -94,12 +97,11 @@ public class BtInRange {
         if (!deviceConnectedResult) {
             bTCallBacks.btInRangeResult(deviceConnectedResult);
             Log.v("Msg", "Timeout, not connected");
-
-            // Check again after 30s
-            Looper.prepare();
-            delayChecker();
-            Looper.loop();
         }
+        // Check again after 30s
+        Looper.prepare();
+        delayChecker();
+        Looper.loop();
 
     }
 
@@ -122,8 +124,6 @@ public class BtInRange {
                         deviceConnectedResult = true;
                         bTCallBacks.btInRangeResult(deviceConnectedResult);
                         Log.v("Msg", "BT connected "+ device.getName() + " looking for "+deviceHardwareAddress);
-                        delayChecker();
-
                     }
                     else {
                         // Not target device.
